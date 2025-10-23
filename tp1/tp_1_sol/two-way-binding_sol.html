@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Manipulation de vue - Exercice 4</title>
+  <script src="https://unpkg.com/vue@3"></script>  
+</head>
+<body>
+
+<div id="monapp" class="exercice4">
+  <h2>Exercice 4</h2>
+
+  <ul>
+    <li>
+      Couleur de la police:
+      <!-- Radios html pour le choix de couleur -->
+      <div class="controls" role="radiogroup" aria-label="Couleur du paragraphe">
+        <label>
+          <input type="radio" name="couleur" value="red" v-model="couleur"> Rouge
+        </label>
+        <label>
+          <input type="radio" name="couleur" value="blue" v-model="couleur"> Bleu
+        </label>
+      </div>
+    </li>
+
+    <li>
+      CHOISISSEZ: Afficher/cacher le paragraphe?
+      <!-- Checkbox pour mode visible et cache -->
+      <label class="checkbox">
+        <input type="checkbox" v-model="visible"> 
+      </label>
+    </li>
+  </ul>
+  <!-- Usage de v-show -->
+  <p class="paragraphe" 
+     v-show="visible"
+     :style="{ color: couleur }">
+    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam pariatur
+    odit molestias veritatis, repellat sed, suscipit dolore magni alias
+    provident rerum voluptate. Doloribus laudantium maiores at necessitatibus
+    odit? Qui ipsum distinctio?
+  </p>
+</div>
+
+<script>
+  const appli = {
+    data() {
+      return {
+        // couleur initiale du texte
+        couleur: "black",
+
+        // Visible par defaut
+        visible: true
+      };
+    }
+  };
+
+  Vue.createApp(appli).mount("#monapp");
+</script>
+</body>
+</html>
