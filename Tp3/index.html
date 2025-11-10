@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title>Les Bonnes Pièces</title>
+		<link rel="stylesheet" href="styles.css">
+		<script type="module" src="pieces.js"></script>
+		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	</head>
+	<body>
+		<div id="app">
+		<header>
+			<img src="images/logo-les-bonnes-pieces.png" alt="LOGO">
+			<h1>Les Bonnes Pièces</h1>
+		</header>
+		<main>
+			<!-- Menu de recherche -->
+			<section class="filtres">
+				<h3>Filtres</h3>
+				<div class="filtre-group">
+					<label>Recherche:</label><br>
+					<input v-model="recherche" type="text" placeholder="Rechercher une pièce..."><br><br>
+				</div>
+				<div class="filtre-group">
+					<label>Catégorie:</label><br>
+					<select v-model="categorie">
+						<option value="">Toutes les catégories</option>
+						<option v-for="cat in categories" :key="cat" :value="cat">
+							{{ cat }}
+						</option>
+					</select>
+				</div><br>
+				<div class="filtre-group">
+					<label>Disponibilité:</label><br>
+					<label><input type="radio" value="" v-model="disponibilite"> Tous</label><br>
+					<label><input type="radio" value="true" v-model="disponibilite"> En stock</label><br>
+					<label><input type="radio" value="false" v-model="disponibilite"> Rupture</label><br><br>
+				</div>
+				
+				<div class="filtre-group">
+					<label>Tri par prix:</label><br>
+					<label><input type="radio" value="" v-model="tri"> Aucun</label><br>
+					<label><input type="radio" value="asc" v-model="tri"> Croissant</label><br>
+					<label><input type="radio" value="desc" v-model="tri"> Décroissant</label><br><br>
+				</div>
+			</section>
+
+			<!-- Fiches produits -->
+			<section class="fiches">
+				<div v-for="piece in piecesFiltrees" :key="piece.id" class="fiche">
+                <div class="fiche-image">
+                    <img :src="piece.image || 'images/placeholder.jpg'" :alt="piece.nom" onerror="this.src='images/placeholder.jpg'">
+                </div>
+                <div class="fiche-contenu">
+                    <div class="fiche-nom">{{ piece.nom }}</div>
+                    <div class="fiche-categorie">{{ piece.categorie }}</div>
+                    <div class="fiche-prix">{{ piece.prix }}€</div>
+                    <div :class="['fiche-disponibilite', piece.disponible ? 'disponible' : 'indisponible']">
+                        {{ piece.disponible ? 'En stock' : 'Rupture de stock' }}
+                    </div>
+                    <button @click="ajouterAuPanier(piece)" :disabled="!piece.disponible"
+                        :class="['btn-ajouter', piece.added ? 'added' : '']">
+                        {{ piece.added ? 'Ajouté!' : 'Ajouter au panier' }}
+                    </button>
+                </div>
+            </div>
+			</section>
+		</main>
+		</div>
+
+		<script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    pieces: [],
+                    panier: [],
+                    recherche: '',
+                    categorie: '',
+                    disponibilite: '',
+                    tri: ''
+                };
+            },
+            computed: {
+                categories() {
+                    return [...new Set(this.pieces.map(p => p.categorie))].sort();
+                },
+                piecesFiltrees() {
+                    let resultat = this.pieces.filter(piece => {
+                        const matchRecherche = piece.nom.toLowerCase().includes(this.recherche.toLowerCase());
+                        const matchCategorie = !this.categorie || piece.categorie === this.categorie;
+                        const matchDisponibilite = this.disponibilite === '' || 
+                            piece.disponible.toString() === this.disponibilite;
+                        
+                        return matchRecherche && matchCategorie && matchDisponibilite;
+                    });
+
+                    if (this.tri === 'asc') {
+                        resultat.sort((a, b) => a.prix - b.prix);
+                    } else if (this.tri === 'desc') {
+                        resultat.sort((a, b) => b.prix - a.prix);
+                    }
+
+                    return resultat;
+                }
+            },
+            methods: {
+                ajouterAuPanier(piece) {
+                    this.panier.push(piece);
+                }
+            },
+            mounted() {
+                this.pieces = [
+                    { id: 1, nom: "Batterie 12V", prix: 120, categorie: "Électricité", image: "images/Batterie_12V.jpg", disponible: true },
+{ id: 2, nom: "Filtre à huile", prix: 15, categorie: "Filtration", image: "images/Filtre_à_huile.jpg", disponible: true },
+{ id: 3, nom: "Bougies d'allumage (x4)", prix: 35, categorie: "Moteur", image: "images/Bougies_d'allumage_(x4).jpg", disponible: true },
+{ id: 4, nom: "Disques de frein (x2)", prix: 80, categorie: "Freinage", image: "images/Disques_de_frein_(x2).jpg", disponible: true },
+{ id: 5, nom: "Courroie de distribution", prix: 90, categorie: "Moteur", image: "images/Courroie_de_distribution.jpg", disponible: false },
+{ id: 6, nom: "Pompe à eau", prix: 70, categorie: "Refroidissement", image: "images/Pompe_à_eau.jpg", disponible: true },
+{ id: 7, nom: "Amortisseurs arrière (x2)", prix: 150, categorie: "Suspension", image: "images/Amortisseurs_arrière_(x2).jpg", disponible: true },
+{ id: 8, nom: "Filtre à air", prix: 20, categorie: "Filtration", image: "images/Filtre_à_air.jpg", disponible: false },
+{ id: 9, nom: "Capteur ABS", prix: 50, categorie: "Sécurité", image: "images/Capteur_ABS.jpg", disponible: true },
+{ id: 10, nom: "Radiateur de refroidissement", prix: 130, categorie: "Refroidissement", image: "images/Radiateur_de_refroidissement.jpg", disponible: true },
+{ id: 11, nom: "Alternateur", prix: 200, categorie: "Électricité", image: "images/Alternateur.jpg", disponible: false },
+{ id: 12, nom: "Démarreur", prix: 180, categorie: "Électricité", image: "images/Démarreur.jpg", disponible: true },
+{ id: 13, nom: "Kit d'embrayage", prix: 220, categorie: "Transmission", image: "images/Kit_d'embrayage.jpg", disponible: true },
+{ id: 14, nom: "Injecteur de carburant", prix: 110, categorie: "Moteur", image: "images/Injecteur_de_carburant.jpg", disponible: false },
+{ id: 15, nom: "Pompe à carburant", prix: 90, categorie: "Carburant", image: "images/Pompe_à_carburant.jpg", disponible: true },
+{ id: 16, nom: "Capteur de pression des pneus (TPMS)", prix: 45, categorie: "Sécurité", image: "images/Capteur_de_pression_des_pneus_(TPMS).jpg", disponible: true },
+{ id: 17, nom: "Rétroviseur extérieur", prix: 60, categorie: "Carrosserie", image: "images/Rétroviseur_extérieur.jpg", disponible: false },
+{ id: 18, nom: "Échappement complet", prix: 250, categorie: "Échappement", image: "images/Échappement_complet.jpg", disponible: false }
+
+                ].map(piece => ({...piece, added: false}));
+            },
+            methods: {
+        ajouterAuPanier(piece) {
+            this.panier.push(piece);
+            piece.added = true;
+        }
+    },
+        }).mount('#app');
+    </script>
+	</body>
+</html>
