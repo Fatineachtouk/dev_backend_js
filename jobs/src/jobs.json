@@ -1,0 +1,27 @@
+
+[
+  {
+    "id": 1,
+    "title": "Développeur Full Stack",
+    "description": "Développement d'applications web",
+    "salary": "9000 MAD",
+    "createdAt": "2025-11-01",
+    "experienceYears": 3
+  },
+  {
+    "id": 2,
+    "title": "Designer UI/UX",
+    "description": "Conception d'interfaces utilisateur",
+    "salary": "9500 MAD",
+    "createdAt": "2025-11-10",
+    "experienceYears": 2
+  },
+  {
+    "id": 3,
+    "title": "Chef de projet",
+    "description": "Gestion de projets informatiques",
+    "salary": "11000 MAD",
+    "createdAt": "2025-10-05",
+    "experienceYears": 5
+  }
+]
