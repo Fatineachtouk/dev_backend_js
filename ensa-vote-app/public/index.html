@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENSA Safi - Vote Événements</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- En-tête de l'application -->
+    <header>
+        <div class="container">
+            <h1>🎓 ENSA Safi - Vote Événements</h1>
+            <div id="userInfo" style="display: none;">
+                <span id="userEmail"></span>
+                <button onclick="logout()" class="btn-logout">Déconnexion</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section de connexion/inscription -->
+    <div id="authSection" class="container">
+        <div class="auth-box">
+            <h2>Connexion</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email @ensa-safi.ac.ma" required>
+                <input type="password" id="loginPassword" placeholder="Mot de passe" required>
+                <button type="submit" class="btn-primary">Se connecter</button>
+            </form>
+            <p class="separator">ou</p>
+            <h2>Inscription</h2>
+            <form id="signupForm">
+                <input type="email" id="signupEmail" placeholder="Email @ensa-safi.ac.ma" required>
+                <input type="password" id="signupPassword" placeholder="Mot de passe (min 6 caractères)" required>
+                <button type="submit" class="btn-primary">S'inscrire</button>
+            </form>
+            <p id="authMessage" class="message"></p>
+        </div>
+    </div>
+
+    <!-- Section des événements (cachée au début) -->
+    <div id="eventsSection" class="container" style="display: none;">
+        <h2> Événements à venir</h2>
+        <div id="eventsList" class="events-grid">
+            <!-- Les événements seront affichés ici automatiquement -->
+        </div>
+    </div>
+
+    <!-- Charger Firebase et notre code JavaScript -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
