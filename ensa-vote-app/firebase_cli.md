@@ -1,3 +1,8 @@
+Ce projet est réalisé par :
+* Achtouk Fatine 
+* Alami Ouriagli omayma
+
+
 ```bash
 # Se connecter à Firebase
 firebase login
